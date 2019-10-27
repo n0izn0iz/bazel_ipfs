@@ -1,6 +1,7 @@
 {
   "commands": [
     "**/WORKSPACE : buildifier {relFullPath}",
-    "**/BUILD.bazel : buildifier {relFullPath}"
+    "**/BUILD.bazel : buildifier {relFullPath}",
+    "**/*.bzl : buildifier {relFullPath}"
   ]
 }

@@ -1,0 +1,10 @@
+workspace(name = "bazel_ipfs_hello_bazel")
+
+local_repository(
+    name = "bazel_ipfs",
+    path = "..",
+)
+
+load("@bazel_ipfs//:tools_repo.bzl", "ipfs_tools_repository")
+
+ipfs_tools_repository(name = "bazel_ipfs_tools")

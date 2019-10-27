@@ -1,1 +1,3 @@
 bazel-*
+archive.ref
+hello_bazel.tar.gz

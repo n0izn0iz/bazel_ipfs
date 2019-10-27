@@ -1,0 +1,21 @@
+load("@bazel_ipfs//:index.bzl", "ipfs_pin")
+load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
+
+cc_binary(
+    name = "hello_world",
+    srcs = ["main.c"],
+)
+
+pkg_tar(
+    name = "archive",
+    srcs = [
+        "BUILD.bazel",
+        "main.c",
+    ],
+    extension = "tar.gz",
+)
+
+ipfs_pin(
+    name = "pin",
+    file = ":archive",
+)
