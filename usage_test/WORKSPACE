@@ -19,5 +19,5 @@ ipfs_archive(
 ipfs_archive(
     name = "hello_ipfs_str_ref",
     extension = "tar.gz",
-    ref = "QmPnzLUZf1wU6uYSGnzZFBGDJ5dn23ii7aD9XpyLjbPFXm",
+    ref = "QmcLRC75TFap4UrMd1QUuTatEMazxhE8yV7PCYJZg6guMW",
 )
