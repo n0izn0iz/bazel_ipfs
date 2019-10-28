@@ -24,6 +24,10 @@ run:
 run.str:
 	cd usage_test && bazel run @hello_ipfs_str_ref//:hello_world
 
+.PHONY: ipfs_init
+ipfs_init:
+	cd usage_test && bazel run @bazel_ipfs_tools//:ipfs -- init
+
 .PHONY: $(REF_FILE)
 $(REF_FILE):
 	cd hello_bazel && bazel run pin > ../$@

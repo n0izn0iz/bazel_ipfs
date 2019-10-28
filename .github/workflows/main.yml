@@ -33,6 +33,8 @@ jobs:
         go version
     - name: Checkout
       uses: actions/checkout@v1
+    - name: Init ipfs
+      run: PATH=${PATH}:${HOME}/bin make ipfs_init
     - name: Build and test
       env:
         BAZEL_CMD_ARGS: --sandbox_debug --jobs=2 --local_ram_resources=HOST_RAM*.5
