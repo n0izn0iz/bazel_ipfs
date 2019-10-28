@@ -1,5 +1,17 @@
 # bazel_ipfs
 
+Tested bazel versions:
+- 0.29.1
+- 1.0.0
+- 1.0.1
+- 1.1.0
+
+Tested oses:
+- macOS-10.14
+- ubuntu-18.04
+- ubuntu-16.04
+- arch linux
+
 ## WORKSPACE
 
 ### Quickstart
