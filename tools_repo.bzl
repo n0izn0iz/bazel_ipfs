@@ -16,10 +16,17 @@ def _ipfs_machine(r_ctx):
         "arm": "arm",
     }[machine]
 
+def _ipfs_os(r_ctx):
+    return {
+        "linux": "linux",
+        "mac os x": "darwin",
+        "darwin": "darwin",
+    }[r_ctx.os.name]
+
 def _ipfs_tools_repo_impl(r_ctx):
     # TODO: grab available versions for platform from https://dist.ipfs.io/go-ipfs/versions and  https://dist.ipfs.io/go-ipfs/{version}/dist.json
     version = r_ctx.attr.version
-    full_version = "{0}_{1}-{2}".format(version, r_ctx.os.name, _ipfs_machine(r_ctx))
+    full_version = "{0}_{1}-{2}".format(version, _ipfs_os(r_ctx), _ipfs_machine(r_ctx))
     r_ctx.download_and_extract(
         url = "https://dist.ipfs.io/go-ipfs/{0}/go-ipfs_{1}.tar.gz".format(version, full_version),
         # sha256 = _SHA256_DICT[full_version],  # TODO: don't fail and print warning if not in dict
