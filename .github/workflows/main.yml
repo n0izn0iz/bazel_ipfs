@@ -7,30 +7,23 @@ jobs:
     strategy:
       matrix:
         os: [macOS-10.14, ubuntu-18.04, ubuntu-16.04]
+        bazel-version: [0.29.1, 1.0.0, 1.0.1, 1.1.0]
     runs-on: ${{ matrix.os }}
     steps:
     - if: contains(matrix.os, 'macOS-')
       name: Install bazel (darwin)
       working-directory: /tmp
       run: |
-        curl -LO https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-darwin-x86_64.sh
-        chmod +x bazel-0.29.1-installer-darwin-x86_64.sh
-        ./bazel-0.29.1-installer-darwin-x86_64.sh --user
+        curl -LO https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel-version }}/bazel-${{ matrix.bazel-version }}-installer-darwin-x86_64.sh
+        chmod +x bazel-${{ matrix.bazel-version }}-installer-darwin-x86_64.sh
+        ./bazel-${{ matrix.bazel-version }}-installer-darwin-x86_64.sh --user
     - if: contains(matrix.os, 'ubuntu-')
       name: Install bazel (linux)
       working-directory: /tmp
       run: |
-        curl -LO https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-linux-x86_64.sh
-        chmod +x bazel-0.29.1-installer-linux-x86_64.sh
-        ./bazel-0.29.1-installer-linux-x86_64.sh --user
-    - name: Setup go
-      uses: actions/setup-go@v1
-      with:
-        go-version: 1.12.10
-    - name: Print versions
-      run: |
-        PATH=${PATH}:${HOME}/bin bazel --version
-        go version
+        curl -LO https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel-version }}/bazel-${{ matrix.bazel-version }}-installer-linux-x86_64.sh
+        chmod +x bazel-${{ matrix.bazel-version }}-installer-linux-x86_64.sh
+        ./bazel-${{ matrix.bazel-version }}-installer-linux-x86_64.sh --user
     - name: Checkout
       uses: actions/checkout@v1
     - name: Init ipfs
