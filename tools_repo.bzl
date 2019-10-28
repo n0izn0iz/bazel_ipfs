@@ -22,7 +22,7 @@ def _ipfs_tools_repo_impl(r_ctx):
     full_version = "{0}_{1}-{2}".format(version, r_ctx.os.name, _ipfs_machine(r_ctx))
     r_ctx.download_and_extract(
         url = "https://dist.ipfs.io/go-ipfs/{0}/go-ipfs_{1}.tar.gz".format(version, full_version),
-        sha256 = _SHA256_DICT[full_version],  # TODO: don't fail and print warning if not in dict
+        # sha256 = _SHA256_DICT[full_version],  # TODO: don't fail and print warning if not in dict
         stripPrefix = "go-ipfs",
     )  # TODO: check download return
     r_ctx.file("BUILD.bazel", """exports_files(["ipfs"])""")
