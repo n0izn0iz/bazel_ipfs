@@ -1,0 +1,39 @@
+name: CI
+
+on: push
+
+jobs:
+  bazel:
+    strategy:
+      matrix:
+        os: [macOS-10.14, ubuntu-18.04, ubuntu-16.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - if: contains(matrix.os, 'macOS-')
+      name: Install bazel (darwin)
+      working-directory: /tmp
+      run: |
+        curl -LO https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-darwin-x86_64.sh
+        chmod +x bazel-0.29.1-installer-darwin-x86_64.sh
+        ./bazel-0.29.1-installer-darwin-x86_64.sh --user
+    - if: contains(matrix.os, 'ubuntu-')
+      name: Install bazel (linux)
+      working-directory: /tmp
+      run: |
+        curl -LO https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-linux-x86_64.sh
+        chmod +x bazel-0.29.1-installer-linux-x86_64.sh
+        ./bazel-0.29.1-installer-linux-x86_64.sh --user
+    - name: Setup go
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.12.10
+    - name: Print versions
+      run: |
+        PATH=${PATH}:${HOME}/bin bazel --version
+        go version
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Build and test
+      env:
+        BAZEL_CMD_ARGS: --sandbox_debug --jobs=2 --local_ram_resources=HOST_RAM*.5
+      run: PATH=${PATH}:${HOME}/bin make test
