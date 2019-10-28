@@ -3,11 +3,11 @@ RULES_ARCHIVE=bazel-bin/archive.tar.gz
 
 .PHONY: test
 test: $(REF_FILE)
-	[ "`$(MAKE) -s --no-print-directory run`" == "Hello world!" ]
+	[ "`$(MAKE) -s --no-print-directory run`" = "Hello world!" ]
 
 .PHONY: test
 test.str: $(REF_FILE)
-	[ "`$(MAKE) -s --no-print-directory run.str`" == "Hello world!" ]
+	[ "`$(MAKE) -s --no-print-directory run.str`" = "Hello world!" ]
 
 .PHONY: release
 release: $(RULES_ARCHIVE)
