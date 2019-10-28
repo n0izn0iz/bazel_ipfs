@@ -14,7 +14,7 @@ release: $(RULES_ARCHIVE)
 
 .PHONY: $(RULES_ARCHIVE)
 $(RULES_ARCHIVE):
-	bazel build archive
+	bazel build bazel_ipfs
 
 .PHONY: run
 run:
