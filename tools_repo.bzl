@@ -1,5 +1,6 @@
 _SHA256_DICT = {
     "v0.4.22_linux-amd64": "43431bbef105b1c8d0679350d6f496b934d005df28c13280a67f0c88054976aa",
+    "v0.4.22_darwin-amd64": "14015ae617e92ef4cc4d83711094377cbfb26cf2af5fcbf8ff6e9defa2f9ed84",
 }  # TODO: have code that fetch all sha from dist.ipfs and generates a file to import
 
 def _ipfs_machine(r_ctx):
