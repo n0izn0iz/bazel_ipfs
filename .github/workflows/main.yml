@@ -6,7 +6,7 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [macOS-10.14, ubuntu-18.04, ubuntu-16.04]
+        os: [macOS-10.14, macos-latest, ubuntu-18.04, ubuntu-16.04]
         bazel-version: [0.29.1, 1.0.0, 1.0.1, 1.1.0, 1.2.1, 2.0.0]
     runs-on: ${{ matrix.os }}
     steps:
