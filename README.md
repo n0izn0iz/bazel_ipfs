@@ -9,6 +9,7 @@ Tested bazel versions:
 - 2.0.0
 
 Tested oses:
+- github's macos-latest (currently 10.15)
 - macOS-10.14
 - ubuntu-18.04
 - ubuntu-16.04
