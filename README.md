@@ -5,6 +5,8 @@ Tested bazel versions:
 - 1.0.0
 - 1.0.1
 - 1.1.0
+- 1.2.1
+- 2.0.0
 
 Tested oses:
 - macOS-10.14
