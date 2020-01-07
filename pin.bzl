@@ -1,4 +1,4 @@
-load(":tools_repo.bzl", "attr_ipfs")
+load("@bazel_ipfs//:tools_repo.bzl", "attr_ipfs")
 
 def _ipfs_pin_impl(ctx):
     f = ctx.file.file

@@ -3,27 +3,34 @@ name: CI
 on: push
 
 jobs:
+  print-ref:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print ref
+        run: echo ${{ github.ref }}
+
   test:
     strategy:
       matrix:
-        os: [macOS-10.14, macos-latest, ubuntu-18.04, ubuntu-16.04]
-        bazel-version: [0.29.1, 1.0.0, 1.0.1, 1.1.0, 1.2.1, 2.0.0]
+        go-ipfs: [v0.4.20, v0.4.21, v0.4.22]
+        os: [macos-latest, ubuntu-18.04, ubuntu-16.04]
+        bazel: [0.29.1, 1.2.1, 2.0.0]
     runs-on: ${{ matrix.os }}
     steps:
     - if: contains(matrix.os, 'macOS-')
       name: Install bazel (darwin)
       working-directory: /tmp
       run: |
-        curl -LO https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel-version }}/bazel-${{ matrix.bazel-version }}-installer-darwin-x86_64.sh
-        chmod +x bazel-${{ matrix.bazel-version }}-installer-darwin-x86_64.sh
-        ./bazel-${{ matrix.bazel-version }}-installer-darwin-x86_64.sh --user
+        curl -LO https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel }}/bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh
+        chmod +x bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh
+        ./bazel-${{ matrix.bazel }}-installer-darwin-x86_64.sh --user
     - if: contains(matrix.os, 'ubuntu-')
       name: Install bazel (linux)
       working-directory: /tmp
       run: |
-        curl -LO https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel-version }}/bazel-${{ matrix.bazel-version }}-installer-linux-x86_64.sh
-        chmod +x bazel-${{ matrix.bazel-version }}-installer-linux-x86_64.sh
-        ./bazel-${{ matrix.bazel-version }}-installer-linux-x86_64.sh --user
+        curl -LO https://github.com/bazelbuild/bazel/releases/download/${{ matrix.bazel }}/bazel-${{ matrix.bazel }}-installer-linux-x86_64.sh
+        chmod +x bazel-${{ matrix.bazel }}-installer-linux-x86_64.sh
+        ./bazel-${{ matrix.bazel }}-installer-linux-x86_64.sh --user
     - name: Checkout
       uses: actions/checkout@v1
     - name: Init ipfs
@@ -31,9 +38,10 @@ jobs:
     - name: Test
       env:
         BAZEL_CMD_ARGS: --sandbox_debug --jobs=2 --local_ram_resources=HOST_RAM*.5
-      run: PATH=${PATH}:${HOME}/bin make test
+        TESTED_IPFS_VERSION: ${{ matrix.go-ipfs }}
+      run: PATH=${PATH}:${HOME}/bin make ci-test
   release:
-    if: startsWith(github.ref, 'refs/tags/v') && contains(github.ref, 'refs/heads/master')
+    if: contains(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -49,9 +57,23 @@ jobs:
         env:
           BAZEL_CMD_ARGS: --sandbox_debug --jobs=2 --local_ram_resources=HOST_RAM*.5
         run: PATH=${PATH}:${HOME}/bin make release
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: bazel-bin/bazel_ipfs.tar.gz
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./bazel-bin/bazel_ipfs.tar.gz
+          asset_name: bazel_ipfs.tar.gz
+          asset_content_type: application/gzip

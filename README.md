@@ -1,19 +1,8 @@
 # bazel_ipfs
 
-Tested bazel versions:
-- 0.29.1
-- 1.0.0
-- 1.0.1
-- 1.1.0
-- 1.2.1
-- 2.0.0
+## Compatibility
 
-Tested oses:
-- github's macos-latest (currently 10.15)
-- macOS-10.14
-- ubuntu-18.04
-- ubuntu-16.04
-- arch linux
+See `jobs.test.strategy.matrix` in `./.github/workflows/main.yml` for tested versions
 
 ## WORKSPACE
 
@@ -24,8 +13,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "bazel_ipfs",
-    sha256 = "b39a930da4239beef7d4bb1761cdc7e227a7f05299c075be7e7580886cba30ce",
-    urls = ["https://github.com/n0izn0iz/bazel_ipfs/releases/download/v0.0.2/bazel_ipfs.tar.gz"],
+    sha256 = "e05f3e137e6498c3ab286f35f8abd1a659a42becb7dc6e17ab35abbe5c1281dc",
+    urls = ["https://github.com/n0izn0iz/bazel_ipfs/releases/download/v0.1.0/bazel_ipfs.tar.gz"],
 )
 
 load("@bazel_ipfs//:index.bzl", "ipfs_archive", "ipfs_tools_repository")
